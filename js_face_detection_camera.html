@@ -110,7 +110,7 @@ let faces = new cv.RectVector();
 let classifier = new cv.CascadeClassifier();
 
 // load pre-trained classifiers
-classifier.load('haarcascade_frontalface_alt.xml');
+classifier.load('./haarcascades/haarcascade_frontalface_alt.xml');
 
 const FPS = 30;
 function processVideo() {
@@ -193,7 +193,7 @@ function onVideoStopped() {
 }
 
 utils.loadOpenCv(() => {
-    let faceCascadeFile = 'haarcascade_frontalface_alt.xml';
+    let faceCascadeFile = './haarcascades/haarcascade_frontalface_alt.xml';
     utils.createFileFromUrl(faceCascadeFile, faceCascadeFile, () => {
         startAndStop.removeAttribute('disabled');
     });
