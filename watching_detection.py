@@ -6,7 +6,7 @@ cascade_path = "./haarcascades/haarcascade_frontalface_alt_tree.xml"
 
 w = int(pyautogui.size().width/2)
 h = int(pyautogui.size().height/2)
-min_detect_size = 200
+min_detect_size = 50
 ret, frame = capture.read()
 cv2.imshow('title',frame)
 cv2.moveWindow('title', 0, 0)
