@@ -110,8 +110,8 @@ let faces = new cv.RectVector();
 let classifier = new cv.CascadeClassifier();
 
 // load pre-trained classifiers
-classifier.load('haarcascade_frontalface_alt.xml');
-
+classifier.load('haarcascade_frontalface_default.xml');
+let continuous = [0,0,0,0,0,0,0,0,0,0]
 const FPS = 30;
 function processVideo() {
     try {
@@ -130,7 +130,7 @@ function processVideo() {
         src.copyTo(dst);
         cv.cvtColor(dst, gray, cv.COLOR_RGBA2GRAY, 0);
         // detect faces.
-        classifier.detectMultiScale(gray, faces, 1.1, 3, 0);
+        classifier.detectMultiScale(gray, faces, 1.1, 3 , 0);
         // draw faces.
         for (let i = 0; i < faces.size(); ++i) {
             let face = faces.get(i);
@@ -138,7 +138,27 @@ function processVideo() {
             let point2 = new cv.Point(face.x + face.width, face.y + face.height);
             cv.rectangle(dst, point1, point2, [255, 0, 0, 255]);
         }
+
+        continuous.pop();
         if (faces.size() > 0) {
+            continuous.unshift(1)
+        } else {
+            continuous.unshift(0)
+        }
+        
+        let average = function(arr) {
+            let sum = 0;
+            arr.forEach(function(elem) {
+                sum+=elem;
+            });
+            return sum/arr.length;
+        }
+
+        continuous_ave = average(continuous)
+        console.log(continuous_ave)
+        console.log(continuous)
+
+        if (continuous_ave > 0.7) {
             playVideo();
         } else {
             pauseVideo();
@@ -193,7 +213,7 @@ function onVideoStopped() {
 }
 
 utils.loadOpenCv(() => {
-    let faceCascadeFile = 'haarcascade_frontalface_alt.xml';
+    let faceCascadeFile = 'haarcascade_frontalface_default.xml';
     utils.createFileFromUrl(faceCascadeFile, faceCascadeFile, () => {
         startAndStop.removeAttribute('disabled');
     });
